@@ -15,6 +15,14 @@
 	</properties>
 
 	<dependencies>
+
+		<!-- linkage with backend -->
+		<dependency>
+			<groupId>net.kzn</groupId>
+			<artifactId>shoppingbackend</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
 		<!-- javaee-api -->
 		<dependency>
 			<groupId>javax</groupId>
@@ -29,7 +37,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- jstl -->
 		<dependency>
 			<groupId>jstl</groupId>
