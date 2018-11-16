@@ -6,14 +6,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import net.kzn.onlineshopping.exception.ProductNotFoundException;
 import net.kzn.shoppingbackend.dao.CategoryDAO;
+import net.kzn.shoppingbackend.dao.ProductDAO;
 import net.kzn.shoppingbackend.dto.Category;
+import net.kzn.shoppingbackend.dto.Product;
 
 @Controller
 public class PageController {
 
 	@Autowired
 	private CategoryDAO categoryDAO;
+	
+	@Autowired
+	private ProductDAO productDAO;
 	
 	@RequestMapping(value = {"/", "/home", "/index"})
 	public ModelAndView index() {
@@ -23,6 +29,7 @@ public class PageController {
 		mv.addObject("categories", categoryDAO.list());
 		mv.addObject("userClickHome",true);
 		return mv;
+		
 	}
 	
 	@RequestMapping(value = "/about")
@@ -62,6 +69,25 @@ public class PageController {
 		mv.addObject("categories", categoryDAO.list());
 		mv.addObject("category", category);
 		mv.addObject("userClickCategoryProducts",true);
+		return mv;
+	}
+	
+	@RequestMapping(value = {"/show/{id}/product"})
+	public ModelAndView showSingleProduct(@PathVariable int id) throws ProductNotFoundException {
+		ModelAndView mv = new ModelAndView("page");
+		
+		Product product=productDAO.get(id);
+		
+		if(product == null) {
+			throw new ProductNotFoundException();
+		}
+		product.setViews(product.getViews()+1);
+		productDAO.update(product);
+		
+		mv.addObject("title",product.getName());
+		mv.addObject("product",product);
+		mv.addObject("userClickShowProduct",true);
+		
 		return mv;
 	}
 	
